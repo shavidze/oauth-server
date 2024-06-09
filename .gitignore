@@ -1,0 +1,53 @@
+# Git repository data
+.git/
+
+# JetBrains IDE files
+.idea/**/
+
+# Visual Studio files
+.vs/**/
+
+# Compiled source
+**/bin/
+**/obj/
+*.exe
+*.dll
+*.pdb
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio cache/options directory
+.vs/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NuGet Packages
+*.nupkg
+project.lock.json
+package-lock.json
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# dotenv
+.env
