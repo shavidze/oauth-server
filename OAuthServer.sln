@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthServer", "OAuthServer\OAuthServer.csproj", "{A80E9F38-30DB-4C5D-9F7F-5327DAF0765B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{9EAC4F20-6B35-40D6-B26F-D63B04534D4B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A80E9F38-30DB-4C5D-9F7F-5327DAF0765B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80E9F38-30DB-4C5D-9F7F-5327DAF0765B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80E9F38-30DB-4C5D-9F7F-5327DAF0765B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80E9F38-30DB-4C5D-9F7F-5327DAF0765B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EAC4F20-6B35-40D6-B26F-D63B04534D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EAC4F20-6B35-40D6-B26F-D63B04534D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EAC4F20-6B35-40D6-B26F-D63B04534D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EAC4F20-6B35-40D6-B26F-D63B04534D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
