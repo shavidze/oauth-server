@@ -36,3 +36,5 @@ app.MapGet("/login", () => Results.Challenge(new AuthenticationProperties()
         RedirectUri = "https://localhost:5247/"
     },
     authenticationSchemes: new [] { "custom" }));
+
+app.Run();    
