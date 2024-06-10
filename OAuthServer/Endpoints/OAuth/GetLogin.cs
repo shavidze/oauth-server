@@ -6,7 +6,7 @@ public static class GetLogin
 {
     public static async Task Hanlder(string returnUrl, HttpResponse response)
     {
-        response.Headers.ContentType = new string[] {  "text/html" };
+        response.Headers.ContentType = new string[] { "text/html" };
         await response.WriteAsync(
             $"""
              <html>
