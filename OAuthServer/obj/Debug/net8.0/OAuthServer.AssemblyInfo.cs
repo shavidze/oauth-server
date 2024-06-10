@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OAuthServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe3ec7d98e3e4f49452b950ea04bd51536856eae")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dedab7ce01f7d4c4a08db6e793b0ded382d2b5de")]
 [assembly: System.Reflection.AssemblyProductAttribute("OAuthServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OAuthServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
