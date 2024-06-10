@@ -27,11 +27,12 @@ var app = builder.Build();
 
 app.MapGet("/", (HttpContext context) => { return context.User.Claims.Select(x => new { x.Type, x.Value }).ToList(); });
 
-app.MapGet("/login", () =>
-{
-    return Results.Challenge(new AuthenticationProperties()
-        {
-            RedirectUri = "https://localhost:5247/"
-        },
-        authenticationSchemes: new List<string>( { "custom" }));
-});
+/*
+ * ესეიგი, აქ ვაჩელენგებთ უზერს, რომ გაიაროს აუთენტიფიკაცია, მითითებული აუთენტიკაციის სქემით,
+ * ამ შემთხვევაში, `custom` სქემით, რომელიც აღვწერეთ ზემოთ არის `oauth` პროტოკოლის სქემა.
+ */
+app.MapGet("/login", () => Results.Challenge(new AuthenticationProperties()
+    {
+        RedirectUri = "https://localhost:5247/"
+    },
+    authenticationSchemes: new [] { "custom" }));
