@@ -37,4 +37,4 @@ app.MapGet("/login", () => Results.Challenge(new AuthenticationProperties()
     },
     authenticationSchemes: new [] { "custom" }));
 
-app.Run();    
+app.Run();
