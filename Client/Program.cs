@@ -1,44 +1,37 @@
+using Microsoft.AspNetCore.Authentication;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddAuthentication("cookie").AddCookie("cookie").AddOAuth("custom", o =>
+{
+    // როდესაც ტოკენს დავითრევთ, და უზერის შესახებ დაგვჭირდება ინფორმაციის წამოღება და წამოვიღებთ გიტჰაბიდან `backchannel`-ით
+    // მერე გამოვიყენებთ `cookie` აუთენტიფიკაციას, დავაგენერირებთ ქქუქის და მივცეთ უკან უზერ აგენტს = ბრაუზერს.
+    o.SignInScheme = "cookie";
+
+    o.ClientId = "x";
+    o.ClientSecret = "x";
+
+    o.AuthorizationEndpoint = "https://localhost:5140/oauth/authorize";
+    o.TokenEndpoint = "https://localhost:5140/oauth/token";
+    o.CallbackPath = "/oauth/custom-cb";
+
+    o.UsePkce = true;
+    o.ClaimActions.MapJsonKey("sub", "sub");
+    o.Events.OnCreatingTicket = async context =>
+    {
+        //todo: map claims
+    };
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.MapGet("/", (HttpContext context) => { return context.User.Claims.Select(x => new { x.Type, x.Value }).ToList(); });
+
+app.MapGet("/login", () =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                 (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
-app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+    return Results.Challenge(new AuthenticationProperties()
+        {
+            RedirectUri = "https://localhost:5247/"
+        },
+        authenticationSchemes: new List<string>( { "custom" }));
+});
