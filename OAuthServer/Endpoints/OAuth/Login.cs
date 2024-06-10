@@ -13,7 +13,9 @@ public static class Login
                 {
                     new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString())
                 }, "cookie")));
-
+        
+        // ეს რეზალტ კლასი, ენკაფსულაციას უკეთბს რესპონს, რომელიც უნდა გავაგზავნოთ კლიენტზე.
+        // ეს 302, დააბრუნებს და გაატანს `returnUrl`-ს თუ სად წავიდეს.
         return Results.Redirect(returnUrl);
     }
 }
