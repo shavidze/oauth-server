@@ -9,6 +9,9 @@ public class DevKeys
     // ამ შემთხვეავში ეგენი ინახება `RSA`-ში.
     private RSA RsaKey { get; }
     
+    /*
+     * ენკაფსულაციას უკეთებს ჩვენს `RsaKey`-ს, წვდომას აძლეევს,მხოლოდ `public key`-ზე. 
+     */
     public RsaSecurityKey RsaSecurityKey => new RsaSecurityKey(RsaKey);
     
     public DevKeys(IWebHostEnvironment env)
