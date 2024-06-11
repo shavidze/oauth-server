@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.DataProtection;
 
@@ -33,7 +34,10 @@ public static class AuthorizationEndpoint
             Expiry = DateTime.Now.AddMinutes(5)
         };
         
+        // ჯსონ სტრინგში გადაგვყავს, რომ ქუერი პარამეტრში გავატანოთ.
+        var codeString = protector.Protect(JsonSerializer.Serialize(code));
+        
         return Results.Redirect(
-            $"{redirect_uri}?code={}&state={state}&iss={HttpUtility.UrlEncode("https://localhost:5247")}");
+            $"{redirect_uri}?code={codeString}&state={state}&iss={HttpUtility.UrlEncode("https://localhost:5247")}");
     }
 }
