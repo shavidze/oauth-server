@@ -11,8 +11,8 @@ builder.Services.AddAuthentication("cookie").AddCookie("cookie").AddOAuth("custo
     o.ClientId = "x";
     o.ClientSecret = "x";
 
-    o.AuthorizationEndpoint = "https://localhost:5140/oauth/authorize";
-    o.TokenEndpoint = "https://localhost:5140/oauth/token";
+    o.AuthorizationEndpoint = "https://localhost:5002/oauth/authorize";
+    o.TokenEndpoint = "https://localhost:5002/oauth/token";
     o.CallbackPath = "/oauth/custom-cb";
 
     o.UsePkce = true;
@@ -33,7 +33,7 @@ app.MapGet("/", (HttpContext context) => { return context.User.Claims.Select(x =
  */
 app.MapGet("/login", () => Results.Challenge(new AuthenticationProperties()
     {
-        RedirectUri = "https://localhost:5247/"
+        RedirectUri = "https://localhost:5002/"
     },
     authenticationSchemes: new [] { "custom" }));
 

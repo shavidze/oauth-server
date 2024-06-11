@@ -10,7 +10,7 @@ public class DevKeys
     private RSA RsaKey { get; }
     
     /*
-     * ენკაფსულაციას უკეთებს ჩვენს `RsaKey`-ს, წვდომას აძლეევს,მხოლოდ `public key`-ზე. 
+     * ენკაფსულაციას უკეთებს ჩვენს `RsaKey`-ს. 
      */
     public RsaSecurityKey RsaSecurityKey => new RsaSecurityKey(RsaKey);
     

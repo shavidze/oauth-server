@@ -1,4 +1,5 @@
 using OAuthServer;
+using OAuthServer.Endpoints;
 using OAuthServer.Endpoints.OAuth;
 using OAuthServer.Endpoints.OAuth.OAuth;
 
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication("cookie").AddCookie("cookie", o =>
 {
+    //თუ დალოგინებული არაა გადამისამართე /ლოგინ-ზე.
     o.LoginPath = "/login";
 });
 
@@ -14,7 +16,11 @@ builder.Services.AddSingleton<DevKeys>();
 
 var app = builder.Build();
 
-app.MapGet("/login", GetLogin.Hanlder);
+app.MapGet("/login", GetLogin.Handler);
 app.MapPost("/login", Login.Handler);
-app.MapGet("/oauth/authorization", AuthorizationEndpoint.Handle).RequireAuthorization();
+
+// თუ ავთენტიფიცირებული არაა დარეჯექტდება, თუ დარეჯექტდა `o.LoginPath`-ზე წავა.
+app.MapGet("/oauth/authorize", AuthorizationEndpoint.Handle).RequireAuthorization();
 app.MapGet("/oauth/token", TokenEndpoint.Handle);
+
+app.Run();

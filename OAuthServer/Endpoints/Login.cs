@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 
-namespace OAuthServer.Endpoints.OAuth;
+namespace OAuthServer.Endpoints;
 
 public static class Login
 {

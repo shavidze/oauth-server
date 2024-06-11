@@ -38,6 +38,6 @@ public static class AuthorizationEndpoint
         var codeString = protector.Protect(JsonSerializer.Serialize(code));
         
         return Results.Redirect(
-            $"{redirect_uri}?code={codeString}&state={state}&iss={HttpUtility.UrlEncode("https://localhost:5247")}");
+            $"{redirect_uri}?code={codeString}&state={state}&iss={HttpUtility.UrlEncode("https://localhost:5001")}");
     }
 }
