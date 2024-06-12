@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.DataProtection;
 
-namespace OAuthServer.Endpoints.OAuth.OAuth;
+namespace OAuthServer.Endpoints.OAuth;
 
 public static class AuthorizationEndpoint
 {

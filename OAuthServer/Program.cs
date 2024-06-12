@@ -1,7 +1,6 @@
 using OAuthServer;
 using OAuthServer.Endpoints;
 using OAuthServer.Endpoints.OAuth;
-using OAuthServer.Endpoints.OAuth.OAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 
