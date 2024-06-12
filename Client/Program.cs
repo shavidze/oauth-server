@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,15 +12,22 @@ builder.Services.AddAuthentication("cookie").AddCookie("cookie").AddOAuth("custo
     o.ClientId = "x";
     o.ClientSecret = "x";
 
-    o.AuthorizationEndpoint = "https://localhost:5002/oauth/authorize";
+    o.AuthorizationEndpoint = "https://localhost:5002/oauth/auth  orize";
     o.TokenEndpoint = "https://localhost:5002/oauth/token";
     o.CallbackPath = "/oauth/custom-cb";
 
     o.UsePkce = true;
     o.ClaimActions.MapJsonKey("sub", "sub");
+    o.ClaimActions.MapJsonKey("custom 32", "custom");
     o.Events.OnCreatingTicket = async context =>
     {
-        //todo: map claims
+        if (context.AccessToken != null)
+        {
+            var payloadBase64 = context.AccessToken.Split('.')[1];
+            var payloadJson = Base64UrlTextEncoder.Decode(payloadBase64);
+            var payload = JsonDocument.Parse(payloadJson);
+            context.RunClaimActions(payload.RootElement);
+        }
     };
 });
 

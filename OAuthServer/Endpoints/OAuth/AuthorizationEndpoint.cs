@@ -8,18 +8,31 @@ public static class AuthorizationEndpoint
 {
     public static IResult Handle(HttpRequest request,IDataProtectionProvider dataProtectionProvider)
     {
-        request.Query.TryGetValue("response_type", out var response_type);
-        request.Query.TryGetValue("client_id", out var client_id);
-        request.Query.TryGetValue("client_secret", out var client_secret);
-        request.Query.TryGetValue("code_challenge", out var code_challenge);
-        request.Query.TryGetValue("code_challenge_method", out var code_challenge_method);
-        request.Query.TryGetValue("redirect_uri", out var redirect_uri);
-        request.Query.TryGetValue("scope", out var scope);
-
+        var iss = HttpUtility.UrlEncode("https://localhost:5001");
+        
         // state არის უნიკალური მნიშვნელობა, რომელიც თავიდან იქმნება კლიენტის მხრიდან,რომ
         // სერვერიდან მოსული ინფორმაცია, დაადასტუროს რომ ნამდვილად იმ სერვერიცსაა რომელსაც ელეპარაკება
         // ავტორიზაციის სერვერი, ბოლოს ამ მნიშნველობასაც უბრუნებს ქოლ ბექის ქუერი პარამეტრში უზერ აგენტს, და აგენტი კლიენტს.
         request.Query.TryGetValue("state", out var state);
+        
+        if (!request.Query.TryGetValue("response_type", out var responseType))
+        {
+            return Results.BadRequest(new
+            {
+                error = "invalid_request",
+                state,
+                iss
+            });    
+        }
+        
+        request.Query.TryGetValue("client_id", out var clinetId);
+        request.Query.TryGetValue("client_secret", out var clientSecret);
+        request.Query.TryGetValue("code_challenge", out var codeChallenge);
+        request.Query.TryGetValue("code_challenge_method", out var codeChallengeMethod);
+        request.Query.TryGetValue("redirect_uri", out var redirectUri);
+        request.Query.TryGetValue("scope", out var scope);
+
+        
 
         /*
          * დავაგენერიროთ კოდი
@@ -27,10 +40,10 @@ public static class AuthorizationEndpoint
         var protector = dataProtectionProvider.CreateProtector("oauth");
         var code = new AuthCode()
         {
-            ClientId = client_id,
-            CodeChallenge = code_challenge,
-            CodeChallengeMethod = code_challenge_method,
-            RedirectUri = redirect_uri,
+            ClientId = clinetId,
+            CodeChallenge = codeChallenge,
+            CodeChallengeMethod = codeChallengeMethod,
+            RedirectUri = redirectUri,
             Expiry = DateTime.Now.AddMinutes(5)
         };
         
@@ -38,6 +51,6 @@ public static class AuthorizationEndpoint
         var codeString = protector.Protect(JsonSerializer.Serialize(code));
         
         return Results.Redirect(
-            $"{redirect_uri}?code={codeString}&state={state}&iss={HttpUtility.UrlEncode("https://localhost:5001")}");
+            $"{redirectUri}?code={codeString}&state={state}&iss={iss}");
     }
 }
