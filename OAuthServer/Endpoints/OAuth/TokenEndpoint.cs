@@ -17,16 +17,32 @@ namespace OAuthServer.Endpoints.OAuth
 
             try
             {
-                // Read the request body asynchronously
-                var body = await new StreamReader(request.Body).ReadToEndAsync();
-                // Parse the query string
-                var parsedBody = HttpUtility.ParseQueryString(body);
+                var bodyBytes = await request.BodyReader.ReadAsync();
+                var bodyContent = Encoding.UTF8.GetString(bodyBytes.Buffer);
+                Console.WriteLine(bodyContent);
+                foreach (var part in bodyContent.Split('&'))
+                {
+                    var subParts = part.Split('=');
+                    var key = subParts[0];
+                    var value = subParts[1];
 
-                // Extract parameters
-                grantType = parsedBody["grant_type"] ?? string.Empty;
-                code = parsedBody["code"] ?? string.Empty;
-                redirectUri = parsedBody["redirect_uri"] ?? string.Empty;
-                codeVerifier = parsedBody["code_verifier"] ?? string.Empty;
+                    switch (key)
+                    {
+                        case "grant_type":
+                            grantType = value;
+                            break;
+                        case "code":
+                            code = value;
+                            break;
+                        case "redirect_uri":
+                            redirectUri = value;
+                            break;
+                        case "code_verifier":
+                            codeVerifier = value;
+                            break;
+                    }
+
+                }
             }
             catch (Exception ex)
             {
@@ -76,7 +92,8 @@ namespace OAuthServer.Endpoints.OAuth
                     Expires = DateTime.Now.AddMinutes(15),
                     TokenType = "Bearer",
                     SigningCredentials = new SigningCredentials(devKeys.RsaSecurityKey, SecurityAlgorithms.RsaSha256)
-                })
+                }),
+                token_type = "Bearer"
             });
         }
 
@@ -86,7 +103,7 @@ namespace OAuthServer.Endpoints.OAuth
          */
         private static bool ValidateCodeVerifier(AuthCode code, string codeVerifier)
         {
-            var sha256 = SHA256.Create();
+            using var sha256 = SHA256.Create();
             var codeChallenge = Base64UrlEncoder.Encode(sha256.ComputeHash(Encoding.ASCII.GetBytes(codeVerifier)));
             return code.CodeChallenge == codeChallenge;
         }

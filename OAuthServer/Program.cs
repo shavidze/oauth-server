@@ -20,6 +20,6 @@ app.MapPost("/login", Login.Handler);
 
 // თუ ავთენტიფიცირებული არაა დარეჯექტდება, თუ დარეჯექტდა `o.LoginPath`-ზე წავა.
 app.MapGet("/oauth/authorize", AuthorizationEndpoint.Handle).RequireAuthorization();
-app.MapGet("/oauth/token", TokenEndpoint.Handle);
+app.MapPost("/oauth/token", TokenEndpoint.Handle);
 
 app.Run();
