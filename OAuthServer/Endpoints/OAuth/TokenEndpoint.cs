@@ -1,12 +1,17 @@
+using System.Runtime.Intrinsics.Arm;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 using System.Web;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace OAuthServer.Endpoints.OAuth
 {
-    public class TokenEndpoint
+    public static class TokenEndpoint
     {
-        public static async Task<IResult> Handle(HttpRequest request, DevKeys devKeys)
+        public static async Task<IResult> Handle(HttpRequest request, DevKeys devKeys, IDataProtectionProvider dataProtectionProvider)
         {
             string grantType = "", code = "", redirectUri = "", codeVerifier = "";
 
@@ -28,6 +33,19 @@ namespace OAuthServer.Endpoints.OAuth
                 // Handle exceptions (e.g., log the error)
                 return Results.BadRequest(new { error = "Invalid request format", details = ex.Message });
             }
+            
+            
+            /*
+             * ამოვიღოთ კოდში მოსული მნიშვნელობები, `clientId`,`clientSecret`,`CodeChallengeMethod`,`RedirectUri`,`Expiry`.
+             */
+            var protector = dataProtectionProvider.CreateProtector("oauth");
+        
+            // გავხსნათ ჩვენი კოდი.
+            var codeString = protector.Unprotect(code);
+
+            // დესერიალიზაცია გავუკეთოთ `AuthCode`-ში.
+            var authCode = JsonSerializer.Deserialize<AuthCode>(codeString);
+            
             
             // შევქმნათ ჯსონ ვებ ტოკენი, რომელშიც გავწერთ ქლეიმებს, რამდენი ხანია ვალიდური, da
             // sign in credentials
@@ -54,6 +72,17 @@ namespace OAuthServer.Endpoints.OAuth
                     SigningCredentials = new SigningCredentials(devKeys.RsaSecurityKey, SecurityAlgorithms.RsaSha256)
                 })
             });
+        }
+
+        /**
+         *   code_challenge = BASE64URL-ENCODE(SHA256(ASCII(code_verifier)))
+         *   კოდ ჩელენჯს ასე აგენერირებს კლიენტი,ახლა იგივე გავიმეროროთ და შევადაროთ.
+         */
+        private static bool ValidateCodeVerifier(AuthCode code, string codeVerifier)
+        {
+            var sha256 = SHA256.Create();
+            var codeChallenge = Base64UrlEncoder.Encode(sha256.ComputeHash(Encoding.ASCII.GetBytes(codeVerifier)));
+            return code.CodeChallenge == codeChallenge;
         }
     }
 }
