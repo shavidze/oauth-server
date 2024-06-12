@@ -45,6 +45,12 @@ namespace OAuthServer.Endpoints.OAuth
 
             // დესერიალიზაცია გავუკეთოთ `AuthCode`-ში.
             var authCode = JsonSerializer.Deserialize<AuthCode>(codeString);
+
+            // შევამოწმოთ, ხო იგივე კლიენტი გვესაუბრება ვინც დაიწყო `flow`
+            if (authCode == null || !ValidateCodeVerifier(authCode, codeVerifier))
+            {
+                return Results.BadRequest();
+            }
             
             
             // შევქმნათ ჯსონ ვებ ტოკენი, რომელშიც გავწერთ ქლეიმებს, რამდენი ხანია ვალიდური, da
