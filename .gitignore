@@ -51,3 +51,7 @@ _ReSharper*/
 
 # dotenv
 .env
+
+# Dev Keys
+
+*crypto*
