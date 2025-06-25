@@ -19,7 +19,9 @@ namespace OAuthServer.Endpoints.OAuth
             {
                 var bodyBytes = await request.BodyReader.ReadAsync();
                 var bodyContent = Encoding.UTF8.GetString(bodyBytes.Buffer);
+                
                 Console.WriteLine(bodyContent);
+                
                 foreach (var part in bodyContent.Split('&'))
                 {
                     var subParts = part.Split('=');
@@ -49,7 +51,6 @@ namespace OAuthServer.Endpoints.OAuth
                 return Results.BadRequest(new { error = "Invalid request format", details = ex.Message });
             }
             
-            
             /*
              * ამოვიღოთ კოდში მოსული მნიშვნელობები, `clientId`,`clientSecret`,`CodeChallengeMethod`,`RedirectUri`,`Expiry`.
              */
@@ -66,7 +67,6 @@ namespace OAuthServer.Endpoints.OAuth
             {
                 return Results.BadRequest();
             }
-            
             
             // შევქმნათ ჯსონ ვებ ტოკენი, რომელშიც გავწერთ ქლეიმებს, რამდენი ხანია ვალიდური, da
             // sign in credentials
