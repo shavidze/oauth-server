@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication("cookie").AddCookie("cookie", o =>
 {
-    //თუ დალოგინებული არაა გადამისამართე /ლოგინ-ზე.
+    // თუ დალოგინებული არაა გადამისამართე /ლოგინ-ზე.
     o.LoginPath = "/login";
 });
 
