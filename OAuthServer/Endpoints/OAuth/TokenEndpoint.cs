@@ -41,7 +41,6 @@ namespace OAuthServer.Endpoints.OAuth
                             codeVerifier = value;
                             break;
                     }
-
                 }
             }
             catch (Exception ex)
