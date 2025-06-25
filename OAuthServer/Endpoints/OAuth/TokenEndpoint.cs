@@ -14,7 +14,6 @@ namespace OAuthServer.Endpoints.OAuth
         public static async Task<IResult> Handle(HttpRequest request, DevKeys devKeys, IDataProtectionProvider dataProtectionProvider)
         {
             string grantType = "", code = "", redirectUri = "", codeVerifier = "";
-
             try
             {
                 var bodyBytes = await request.BodyReader.ReadAsync();
