@@ -48,7 +48,6 @@ public static class AuthorizationEndpoint
         
         // ჯსონ სტრინგში გადაგვყავს, რომ ქუერი პარამეტრში გავატანოთ.
         var codeString = protector.Protect(JsonSerializer.Serialize(code));
-        
         return Results.Redirect(
             $"{redirectUri}?code={codeString}&state={state}&iss={iss}");
     }
